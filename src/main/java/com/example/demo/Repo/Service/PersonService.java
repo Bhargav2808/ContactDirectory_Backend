@@ -15,6 +15,7 @@ public class PersonService {
 
 
     public List<Person> getAllPersons() {
+        System.out.println(personRepository.findAll());
         return personRepository.findAll();
     }
 
@@ -23,6 +24,7 @@ public class PersonService {
     }
 
     public Person savePerson(Person person) {
+
         return personRepository.save(person);
     }
 

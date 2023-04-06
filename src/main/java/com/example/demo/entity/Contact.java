@@ -1,11 +1,22 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 @Entity
 @Table(name="contact")
 public class Contact {
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 
     public Contact(){
 
@@ -15,7 +26,6 @@ public class Contact {
     public String toString() {
         return "Contact{" +
                 "id=" + id +
-                ", person_id=" + person_id +
                 ", contactNo='" + contactNo + '\'' +
                 '}';
     }
@@ -24,11 +34,24 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+//    @Column(name = "person_id")
 
-    public Contact(int person_id, String contactNo) {
-        this.person_id = person_id;
+    @Column(name="contact_no")
+    private String contactNo;
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id")
+    @JsonIgnore
+    private Person person;
+
+
+    public Contact(String contactNo, Person person) {
         this.contactNo = contactNo;
+        this.person = person;
     }
+
+
 
     public int getId() {
         return id;
@@ -38,13 +61,7 @@ public class Contact {
         this.id = id;
     }
 
-    public int getPerson_id() {
-        return person_id;
-    }
 
-    public void setPerson_id(int person_id) {
-        this.person_id = person_id;
-    }
 
     public String getContactNo() {
         return contactNo;
@@ -54,9 +71,4 @@ public class Contact {
         this.contactNo = contactNo;
     }
 
-    @Column(name = "person_id")
-    private int person_id;
-
-    @Column(name="contact_no")
-    private String contactNo;
 }

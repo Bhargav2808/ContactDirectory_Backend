@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -12,6 +14,19 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
+
+    @Column(name="first_name")
+    private String firstName;
+
+    @Column(name="last_name")
+    private String lastName;
+
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
+    private List<Contact> contacts = new ArrayList<>();
+
+    public Person(){
+
+    }
 
     public Person(String firstName, String lastName, List<Contact> contacts) {
         this.firstName = firstName;
@@ -61,12 +76,5 @@ public class Person {
         this.contacts = contacts;
     }
 
-    @Column(name="first_name")
-    private String firstName;
 
-    @Column(name="last_name")
-    private String lastName;
-
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Contact> contacts = new ArrayList<>();
 }
